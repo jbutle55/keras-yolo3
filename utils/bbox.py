@@ -52,7 +52,13 @@ def bbox_iou(box1, box2):
     w1, h1 = box1.xmax-box1.xmin, box1.ymax-box1.ymin
     w2, h2 = box2.xmax-box2.xmin, box2.ymax-box2.ymin
     
+    #print('box1: {} and {}'.format(w1,h1))
+    #print('box2: {} and {} /n'.format(w2,h2))
+    
     union = w1*h1 + w2*h2 - intersect
+    
+    if intersect == 0:
+        return 0
     
     return float(intersect) / union
 
