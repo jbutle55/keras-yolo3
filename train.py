@@ -157,11 +157,12 @@ def create_model(
         )  
 
     # load the pretrained weight if exists, otherwise load the backend weight only
+    print(os.getcwd())
     if os.path.exists(saved_weights_name): 
         print("\nLoading pretrained weights.\n")
         template_model.load_weights(saved_weights_name)
     else:
-        template_model.load_weights("backend.h5", by_name=True)       
+        template_model.load_weights("/kaggle/input/yolo-models/backend.h5", by_name=True)
 
     if multi_gpu > 1:
         train_model = multi_gpu_model(template_model, gpus=multi_gpu)
