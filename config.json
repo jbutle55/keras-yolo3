@@ -27,7 +27,7 @@
         "class_scale":          1,
 
         "tensorboard_dir":      "logs",
-        "saved_weights_name":   "trained.h5",
+        "saved_weights_name":   "/kaggle/input/yolo-trained/trained.h5",
         "debug":                true
     },
 
