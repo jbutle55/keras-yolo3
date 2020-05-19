@@ -262,12 +262,21 @@ def run(args):
     ###############################
     callbacks = create_callbacks(config['train']['saved_weights_name'], config['train']['tensorboard_dir'], infer_model)
 
+    #train_model.fit_generator(
+    #    generator        = train_generator, 
+    #    steps_per_epoch  = len(train_generator) * config['train']['train_times'], 
+    #    epochs           = config['train']['nb_epochs'] + config['train']['warmup_epochs'], 
+    #    verbose          = 2 if config['train']['debug'] else 1,
+    #    callbacks        = callbacks,
+    #    workers          = 4,
+    #    max_queue_size   = 8
+    #)
+
     train_model.fit_generator(
         generator        = train_generator, 
         steps_per_epoch  = len(train_generator) * config['train']['train_times'], 
         epochs           = config['train']['nb_epochs'] + config['train']['warmup_epochs'], 
         verbose          = 2 if config['train']['debug'] else 1,
-        callbacks        = callbacks,
         workers          = 4,
         max_queue_size   = 8
     )
