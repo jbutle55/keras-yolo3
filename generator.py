@@ -156,17 +156,16 @@ class BatchGenerator(Sequence):
         return self.net_h, self.net_w
     
     def _aug_image(self, instance, net_h, net_w):
-        image_name = instance['filename']
-        print('Searching for: {}'.format(image_name))
-        
+        image_name = instance['filename']        
         image = cv2.imread(image_name) # RGB image
         
         if image is None:
             image = cv2.imread(image_name.upper())
         
-        if image is None: print('Cannot find ', image_name)
-        print('Image found')
-        print(image)
+        if image is None: 
+            print('Cannot find ', image_name)
+            print('Path: ', instance['filename'])
+        
         image = image[:,:,::-1] # RGB image
             
         image_h, image_w, _ = image.shape
