@@ -24,7 +24,7 @@ def parse_voc_annotation(ann_dir, img_dir, cache_name, labels=[]):
             
             for elem in tree.iter():
                 if 'filename' in elem.tag:
-                    if elem.tag[:-3].lower() == 'jpg':
+                    if elem.tag[-3:].lower() == 'jpg':
                         all_upper = elem.text[:-3]
                         lower_path = '{}.jpg'.format(all_upper)
                         img['filename'] = img_dir + lower_path
