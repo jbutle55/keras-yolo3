@@ -159,6 +159,9 @@ class BatchGenerator(Sequence):
         image_name = instance['filename']
         image = cv2.imread(image_name) # RGB image
         
+        if image is None:
+            image = cv2.imread(image_name.upper())
+        
         if image is None: print('Cannot find ', image_name)
         image = image[:,:,::-1] # RGB image
             

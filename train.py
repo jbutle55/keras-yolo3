@@ -201,9 +201,6 @@ def run(args):
     )
     print('\nTraining on: \t' + str(labels) + '\n')
 
-    test = os.path.isdir(config['train']['train_image_folder'])
-    print('Is directory: {}'.format(test))
-
     ###############################
     #   Create the generators 
     ###############################    
