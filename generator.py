@@ -160,11 +160,13 @@ class BatchGenerator(Sequence):
         image = cv2.imread(image_name) # RGB image
         
         if image is None:
-            image = cv2.imread(image_name.upper())
+            # Work around kaggle not using all upper or lower case
+            path_strip = image_name.rstrip('.jpg')
+            upper_path = path_strip.upper()
+            path = '{}.jpg'.format(upper_path)
+            image = cv2.imread(path)
         
-        if image is None: 
-            print('Cannot find ', image_name)
-            print('Path: ', instance['filename'])
+        if image is None: print('Cannot find ', image_name)
         
         image = image[:,:,::-1] # RGB image
             
