@@ -164,6 +164,7 @@ class BatchGenerator(Sequence):
             path_strip = image_name.rstrip('.jpg')
             upper_path = path_strip.upper()
             path = '{}.jpg'.format(upper_path)
+            print(path)
             image = cv2.imread(path)
         
         if image is None: print('Cannot find ', image_name)
