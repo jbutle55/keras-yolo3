@@ -165,9 +165,9 @@ def create_model(
         print("\nLoading pretrained weights.\n")
         template_model.load_weights(saved_weights_name)
     else:
-        #template_model.load_weights("/kaggle/input/yolo-models/backend.h5", by_name=True)
         print('\nLoading backend weights.\n')
-        template_model.load_weights("/Users/justinbutler/Desktop/school/Calgary/Thesis Work/ML_Testing/yolo_models/backend.h5", by_name=True)
+        template_model.load_weights("/kaggle/input/yolo-models/backend.h5", by_name=True)
+        #template_model.load_weights("/Users/justinbutler/Desktop/school/Calgary/Thesis Work/ML_Testing/yolo_models/backend.h5", by_name=True)
 
     if multi_gpu > 1:
         train_model = multi_gpu_model(template_model, gpus=multi_gpu)
