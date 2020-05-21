@@ -15,15 +15,18 @@ from utils.multi_gpu_model import multi_gpu_model
 import tensorflow as tf
 import keras
 from keras.models import load_model
+import math
 
-
+'''
 config = tf.compat.v1.ConfigProto(
     gpu_options = tf.compat.v1.GPUOptions(per_process_gpu_memory_fraction=0.9)
     # device_count = {'GPU': 1}
 )
+
 config.gpu_options.allow_growth = True
 session = tf.compat.v1.Session(config=config)
 tf.compat.v1.keras.backend.set_session(session)
+'''
 
 def create_training_instances(
     train_annot_folder,
@@ -163,7 +166,8 @@ def create_model(
         template_model.load_weights(saved_weights_name)
     else:
         #template_model.load_weights("/kaggle/input/yolo-models/backend.h5", by_name=True)
-        template_model.load_weights("/kaggle/input/yolo-models/backend.h5", by_name=True)
+        print('\nLoading backend weights.\n')
+        template_model.load_weights("/Users/justinbutler/Desktop/school/Calgary/Thesis Work/ML_Testing/yolo_models/backend.h5", by_name=True)
 
     if multi_gpu > 1:
         train_model = multi_gpu_model(template_model, gpus=multi_gpu)
@@ -179,7 +183,6 @@ def create_model(
 def run(args):
     #config_path = args.conf
     config_path = args  # To work with kaggle implementation
-    #config_path = '/Users/justinbutler/Desktop/school/Calgary/Thesis Work/ML_Testing/keras-yolo3/config.json'
 
     with open(config_path) as config_buffer:    
         config = json.loads(config_buffer.read())
@@ -197,6 +200,9 @@ def run(args):
         config['model']['labels']
     )
     print('\nTraining on: \t' + str(labels) + '\n')
+
+    test = os.path.isdir(config['train']['train_image_folder'])
+    print('Is directory: {}'.format(test))
 
     ###############################
     #   Create the generators 
@@ -237,6 +243,7 @@ def run(args):
     warmup_batches = config['train']['warmup_epochs'] * (config['train']['train_times']*len(train_generator))   
 
     os.environ['CUDA_VISIBLE_DEVICES'] = config['train']['gpus']
+
     multi_gpu = len(config['train']['gpus'].split(','))
 
     train_model, infer_model = create_model(
@@ -271,15 +278,15 @@ def run(args):
     #    workers          = 4,
     #    max_queue_size   = 8
     #)
-
-    train_model.fit_generator(
-        generator        = train_generator, 
-        steps_per_epoch  = len(train_generator) * config['train']['train_times'], 
-        epochs           = config['train']['nb_epochs'] + config['train']['warmup_epochs'], 
-        verbose          = 2 if config['train']['debug'] else 1,
-        workers          = 4,
-        max_queue_size   = 8
-    )
+    
+    train_model.fit(train_generator,
+                    steps_per_epoch= len(train_generator) * config['train']['train_times'],
+                    epochs=config['train']['nb_epochs'] + config['train']['warmup_epochs'],
+                    verbose= 2 if config['train']['debug'] else 1,
+                    callbacks= callbacks,
+                    workers= 4,
+                    max_queue_size= 8
+                    )
 
     # make a GPU version of infer_model for evaluation
     if multi_gpu > 1:
