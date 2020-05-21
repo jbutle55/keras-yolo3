@@ -160,7 +160,6 @@ def create_model(
         )  
 
     # load the pretrained weight if exists, otherwise load the backend weight only
-    print(os.getcwd())
     if os.path.exists(saved_weights_name): 
         print("\nLoading pretrained weights.\n")
         template_model.load_weights(saved_weights_name)
